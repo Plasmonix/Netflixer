@@ -16,9 +16,9 @@ run main.py
 
 ## 🏆 Features List
 - Simple Usage
-- Very Fast Checking
-- Proxyless/No proxy needed
+- Proxies support (Https,Socks4,Socks5)
 - Ultra Fast Hits
+- Hits saver
 
 ## 📚 Contributions
 All suggestions are welcome.
@@ -31,4 +31,3 @@ Netflixer is licensed under [GNU General Public License](https://github.com/Plas
   <img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" alt="Contribution Welcome">
   <img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License Badge">
 </p>
-

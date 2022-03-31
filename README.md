@@ -15,16 +15,17 @@ run main.py
 ![](https://raw.githubusercontent.com/Plasmonix/Netflixer/main/demo.png)
 
 ## 🏆 Features List
-- Simple Usage
-- Proxies support (Https,Socks4,Socks5)
 - Ultra Fast Hits
-- Hits saver
+- Proxy support (HTTPS, SOCKS4, SOCKS5)
+- Multithreaded 
+- High CPM 
+- Save hits to file
 
 ## 📚 Contributions
 All suggestions are welcome.
 
 ## 📜 License
-Netflixer is licensed under [GNU General Public License](https://github.com/Plasmonix/Netflixer/blob/master/LICENSE).
+This Project is licensed under [GNU General Public License](https://github.com/Plasmonix/Netflixer/blob/main/LICENSE).
 
 <p align="center">
   <img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103" alt="Open Source">

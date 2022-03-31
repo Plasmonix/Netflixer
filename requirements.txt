@@ -1,2 +1,5 @@
+requests
 beautifulsoup4
 fake_useragent
+threading
+ctypes

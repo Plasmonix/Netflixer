@@ -64,7 +64,7 @@ class Netflixer:
         try:
             print(f'[{Fore.LIGHTBLUE_EX}>{Fore.RESET}] Path to proxy file> ')
             path = easygui.fileopenbox(default='*.txt', filetypes = ['*.txt'], title= 'Netflixer - Select proxy', multiple= False)
-            open(path, "r") 
+            open(path, "r", encoding="utf-8") 
 
             choice = int(input(f'[{Fore.LIGHTBLUE_EX}?{Fore.RESET}] Proxy type [{Fore.LIGHTBLUE_EX}0{Fore.RESET}]HTTPS/[{Fore.LIGHTBLUE_EX}1{Fore.RESET}]SOCKS4/[{Fore.LIGHTBLUE_EX}2{Fore.RESET}]SOCKS5> '))
             
@@ -79,7 +79,7 @@ class Netflixer:
                 os.system('pause >nul')
                 quit()
             
-            with open(path, 'r') as f:
+            with open(path, 'r', encoding="utf-8") as f:
                 for l in f:
                     ip = l.split(":")[0]
                     port = l.split(":")[1]
@@ -99,7 +99,7 @@ class Netflixer:
         try:
             print(f'[{Fore.LIGHTBLUE_EX}>{Fore.LIGHTWHITE_EX}] Path to combolist> ')
             path = easygui.fileopenbox(default='*.txt', filetypes = ['*.txt'], title= 'Netflixer - Select combos', multiple= False)
-            with open(path, 'r') as f:
+            with open(path, 'r', encoding="utf-8") as f:
                 for l in f:
                      self.combos.append(l.replace('\n', ''))
         except:

@@ -7,7 +7,12 @@
 </p>
   
 ---------------------------------------
-  
+# Deployment
+
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+
 <div align="center">
   <a href="https://github.com/Plasmonix/Netflixer">
     <img src="https://raw.githubusercontent.com/Plasmonix/Netflixer/main/demo.png">
